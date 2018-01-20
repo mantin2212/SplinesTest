@@ -2,28 +2,27 @@ package org.usfirst.frc.team2212.robot.utils;
 
 import java.util.function.Supplier;
 
+import routes.ArgPoint;
 import utils.Point;
 
 public class RobotLocation {
 
-	private Point location;
-	private double arg;
+	private ArgPoint location;
 
 	private double distance;
 	private double dt;
 
-	private Supplier<Double> getRate;
+	private Supplier<Double> getAngle;
 	private Supplier<Double> getDistance;
 
-	public RobotLocation(Point initLocation, double initAngle, double dt, Supplier<Double> getRate,
-			Supplier<Double> getDistance) {
-		this.location = new Point(initLocation);
-		this.arg = initAngle;
+	public RobotLocation(ArgPoint initLocation, double dt, Supplier<Double> getAngle, Supplier<Double> getDistance) {
+
+		this.location = new ArgPoint(initLocation);
 
 		this.dt = dt;
 		this.distance = 0;
 
-		this.getRate = getRate;
+		this.getAngle = getAngle;
 		this.getDistance = getDistance;
 	}
 
@@ -31,16 +30,13 @@ public class RobotLocation {
 		double dl = getDistance.get() - distance;
 		distance += dl;
 
-		arg += dt * getRate.get();
+		location.setAngle(getAngle.get());
 
-		location.move(dl * Math.cos(arg), dl * Math.sin(arg));
+		location.move(dl * Math.cos(location.getAngle()), dl * Math.sin(location.getAngle()));
 	}
 
-	public Point getLocation() {
+	public ArgPoint getLocation() {
 		return location;
 	}
 
-	public double getArg() {
-		return arg;
-	}
 }
