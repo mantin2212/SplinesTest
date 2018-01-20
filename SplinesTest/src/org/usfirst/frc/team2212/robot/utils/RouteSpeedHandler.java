@@ -54,7 +54,7 @@ public class RouteSpeedHandler {
 		}
 	}
 
-	private double getSpeed(double acceleration, double prevSpeed, double distance) {
+	public static double getSpeed(double acceleration, double prevSpeed, double distance) {
 		return Math.sqrt(prevSpeed * prevSpeed + 2 * acceleration * distance);
 	}
 }
