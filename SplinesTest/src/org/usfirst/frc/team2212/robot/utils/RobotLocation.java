@@ -3,7 +3,6 @@ package org.usfirst.frc.team2212.robot.utils;
 import java.util.function.Supplier;
 
 import routes.ArgPoint;
-import utils.Point;
 
 public class RobotLocation {
 

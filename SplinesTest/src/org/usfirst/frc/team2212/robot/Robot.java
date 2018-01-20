@@ -42,8 +42,8 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain(right, left, leftEncoder, rightEncoder, new AnalogGyro(RobotMap.GYRO_PORT));
 
 		oi = new OI();
-		location = new RobotLocation(Constants.ROBOT_INIT_LOCATION, Constants.ROBOT_INIT_ANGLE, Constants.DT,
-				drivetrain::getRate, drivetrain::getDistance);
+		location = new RobotLocation(Constants.ROBOT_INIT_LOCATION, Constants.DT, drivetrain::getRate,
+				drivetrain::getDistance);
 	}
 
 	@Override
