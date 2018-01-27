@@ -10,23 +10,24 @@ import routes.ArgPoint;
 import routes.routes.Route;
 import routes.routes.RouteDescription;
 import routes.routes.SplineDescription;
-import routes.synchronizing.DriveMaxSpeeds;
-import routes.synchronizing.RouteSynchronizer.Side;
+import utils.Point;
 
-/**
- *
- */
 public class DriveTankByRoute extends Command {
 
-	private DriveMaxSpeeds synchronizer;
+	private RouteHelper synchronizer;
+
 	private Timer timer;
+	private Point location;
 
-	public DriveTankByRoute(ArgPoint target) {
+	private double tolerance;
+
+	public DriveTankByRoute(ArgPoint target, double speed, double tolerance, double timeout) {
+
+		this.setTimeout(timeout);
+		this.tolerance = tolerance;
+
 		RouteDescription desc = new SplineDescription(Robot.location.getLocation(), target, Constants.K);
-
-		synchronizer = new DriveMaxSpeeds(Route.getRoute(desc, Constants.N), Constants.ROBOT_WIDTH,
-				Constants.ROBOT_MAX_VELOCITY, Constants.ROBOT_MAX_ACCELERATION);
-
+		synchronizer = new RouteHelper(Route.getRoute(desc, Constants.N), speed, Constants.ROBOT_WIDTH);
 	}
 
 	// Called just before this Command runs the first time
@@ -36,13 +37,15 @@ public class DriveTankByRoute extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		double time = timer.get();
-		Robot.drivetrain.tankDrive(synchronizer.getSpeed(Side.LEFT, time), synchronizer.getSpeed(Side.RIGHT, time));
+		location = Robot.location.getLocation();
+
+		Robot.drivetrain.tankDrive(synchronizer.getLeftVoltage(location, tolerance),
+				synchronizer.getRightVoltage(location, tolerance));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return synchronizer.isFinished(timer.get());
+		return synchronizer.isFinished(location, tolerance) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
