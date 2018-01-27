@@ -19,7 +19,7 @@ public class RobotLocation {
 	private Supplier<Double> getAngle;
 	private Supplier<Double> getDistance;
 
-	public RobotLocation(ArgPoint initLocation, double dt, Supplier<Double> getAngle, Supplier<Double> getDistance) {
+	public RobotLocation(ArgPoint initLocation, Supplier<Double> getAngle, Supplier<Double> getDistance) {
 		// initializing the robot's location
 		this.location = new ArgPoint(initLocation);
 
