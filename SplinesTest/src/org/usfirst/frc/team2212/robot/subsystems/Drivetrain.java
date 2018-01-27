@@ -42,8 +42,8 @@ public class Drivetrain extends TankDrivetrain {
 		left.set(speed);
 	}
 
-	public double getRate() {
-		return gyro.getRate();
+	public double getAngle() {
+		return gyro.getAngle();
 	}
 
 	public double getDistance() {
