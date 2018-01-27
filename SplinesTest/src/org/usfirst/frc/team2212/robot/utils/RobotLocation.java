@@ -3,26 +3,29 @@ package org.usfirst.frc.team2212.robot.utils;
 import java.util.function.Supplier;
 
 import routes.ArgPoint;
+import utils.Point;
 
 public class RobotLocation {
 
 	private ArgPoint location;
 
-	private double distance;
-	private double dt;
+	private Supplier<Double> getTime;
 
-	private Supplier<Double> getAngle;
-	private Supplier<Double> getDistance;
+	private Supplier<Double> getXAcceleration;
+	private Supplier<Double> getYAcceleration;
 
-	public RobotLocation(ArgPoint initLocation, double dt, Supplier<Double> getAngle, Supplier<Double> getDistance) {
+	private Point acceleration;
+
+	public RobotLocation(ArgPoint initLocation, Supplier<Double> getTime, Supplier<Double> getXAcceleration,
+			Supplier<Double> getYAcceleration) {
 
 		this.location = new ArgPoint(initLocation);
 
-		this.dt = dt;
-		this.distance = 0;
+		this.getTime = getTime;
 
-		this.getAngle = getAngle;
-		this.getDistance = getDistance;
+		this.getXAcceleration = getXAcceleration;
+		this.getYAcceleration = getYAcceleration;
+
 	}
 
 	public void update() {

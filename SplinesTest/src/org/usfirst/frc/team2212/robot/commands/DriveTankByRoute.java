@@ -2,6 +2,7 @@ package org.usfirst.frc.team2212.robot.commands;
 
 import org.usfirst.frc.team2212.robot.Robot;
 import org.usfirst.frc.team2212.robot.utils.Constants;
+import org.usfirst.frc.team2212.robot.utils.Utils;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -37,7 +38,11 @@ public class DriveTankByRoute extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double time = timer.get();
-		Robot.drivetrain.tankDrive(synchronizer.getSpeed(Side.LEFT, time), synchronizer.getSpeed(Side.RIGHT, time));
+
+		double rightVoltage = Utils.SpeedToVoltage(synchronizer.getSpeed(Side.RIGHT, time));
+		double leftVoltage = Utils.SpeedToVoltage(synchronizer.getSpeed(Side.LEFT, time));
+
+		Robot.drivetrain.tankDrive(leftVoltage, rightVoltage);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
