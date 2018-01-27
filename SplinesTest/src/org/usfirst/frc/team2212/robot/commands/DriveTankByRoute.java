@@ -2,6 +2,7 @@ package org.usfirst.frc.team2212.robot.commands;
 
 import org.usfirst.frc.team2212.robot.Robot;
 import org.usfirst.frc.team2212.robot.utils.Constants;
+import org.usfirst.frc.team2212.robot.utils.RouteHelper;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -10,7 +11,6 @@ import routes.routes.Route;
 import routes.routes.RouteDescription;
 import routes.routes.SplineDescription;
 import routes.synchronizing.DriveMaxSpeeds;
-import routes.synchronizing.RouteSynchronizer;
 import routes.synchronizing.RouteSynchronizer.Side;
 
 /**
@@ -18,7 +18,7 @@ import routes.synchronizing.RouteSynchronizer.Side;
  */
 public class DriveTankByRoute extends Command {
 
-	private RouteSynchronizer synchronizer;
+	private DriveMaxSpeeds synchronizer;
 	private Timer timer;
 
 	public DriveTankByRoute(ArgPoint target) {

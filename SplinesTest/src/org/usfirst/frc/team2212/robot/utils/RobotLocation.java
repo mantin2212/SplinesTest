@@ -2,15 +2,19 @@ package org.usfirst.frc.team2212.robot.utils;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.Timer;
 import routes.ArgPoint;
 import utils.Point;
 
 public class RobotLocation {
 
+	private Timer timer;
+
 	private ArgPoint location;
 
 	private double prevDistance;
 	private double prevAngle;
+	private double prevTime;
 
 	private Supplier<Double> getAngle;
 	private Supplier<Double> getDistance;
@@ -18,12 +22,19 @@ public class RobotLocation {
 	public RobotLocation(ArgPoint initLocation, double dt, Supplier<Double> getAngle, Supplier<Double> getDistance) {
 		// initializing the robot's location
 		this.location = new ArgPoint(initLocation);
+
 		// initializing class variables
 		this.getAngle = getAngle;
 		this.getDistance = getDistance;
+		timer = new Timer();
+
 		// setting the previous distance and angle to their values
 		this.prevDistance = getDistance.get();
 		this.prevAngle = getAngle.get();
+	}
+
+	public void start() {
+		timer.start();
 	}
 
 	public void update() {
@@ -72,4 +83,9 @@ public class RobotLocation {
 
 		return result;
 	}
+
+	public double getVelocity() {
+		return (getDistance.get() - prevDistance) / (timer.get() - prevTime);
+	}
+
 }
