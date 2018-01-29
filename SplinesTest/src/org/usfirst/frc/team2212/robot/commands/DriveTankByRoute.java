@@ -10,14 +10,13 @@ import routes.ArgPoint;
 import routes.routes.Route;
 import routes.routes.RouteDescription;
 import routes.routes.SplineDescription;
-import utils.Point;
 
 public class DriveTankByRoute extends Command {
 
 	private RouteHelper synchronizer;
 
 	private Timer timer;
-	private Point location;
+	private ArgPoint location;
 
 	private double tolerance;
 
@@ -26,8 +25,12 @@ public class DriveTankByRoute extends Command {
 		this.setTimeout(timeout);
 		this.tolerance = tolerance;
 
-		RouteDescription desc = new SplineDescription(Robot.location.getLocation(), target, Constants.K);
+		this.location = Robot.location.getLocation();
+
+		RouteDescription desc = new SplineDescription(location, target, Constants.K);
 		synchronizer = new RouteHelper(Route.getRoute(desc, Constants.N), speed, Constants.ROBOT_WIDTH);
+
+		requires(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
