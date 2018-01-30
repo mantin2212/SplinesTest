@@ -3,7 +3,7 @@ package org.usfirst.frc.team2212.robot;
 
 import org.usfirst.frc.team2212.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2212.robot.utils.Constants;
-import org.usfirst.frc.team2212.robot.utils.RobotLocation;
+import org.usfirst.frc.team2212.robot.utils.RobotLocationAccelerometers;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.spikes2212.utils.DoubleSpeedcontroller;
@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static Drivetrain drivetrain;
-	public static RobotLocation location;
+	public static RobotLocationAccelerometers location;
 
 	@Override
 	public void robotInit() {
@@ -42,7 +42,7 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain(right, left, leftEncoder, rightEncoder, new AnalogGyro(RobotMap.GYRO_PORT));
 
 		oi = new OI();
-		location = new RobotLocation(Constants.ROBOT_INIT_LOCATION, Constants.DT, drivetrain::getRate,
+		location = new RobotLocationAccelerometers(Constants.ROBOT_INIT_LOCATION, Constants.DT, drivetrain::getRate,
 				drivetrain::getDistance);
 	}
 
