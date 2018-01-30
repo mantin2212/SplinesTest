@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Timer;
 import routes.ArgPoint;
 import utils.Point;
 
-public class RobotLocation {
+public class RobotLocationEncoders {
 
 	private Timer timer;
 
@@ -19,7 +19,7 @@ public class RobotLocation {
 	private Supplier<Double> getAngle;
 	private Supplier<Double> getDistance;
 
-	public RobotLocation(ArgPoint initLocation, Supplier<Double> getAngle, Supplier<Double> getDistance) {
+	public RobotLocationEncoders(ArgPoint initLocation, Supplier<Double> getAngle, Supplier<Double> getDistance) {
 		// initializing the robot's location
 		this.location = new ArgPoint(initLocation);
 
