@@ -19,7 +19,7 @@ public class OI/* gevald */ {
 	public OI() {
 		followRoute = new JoystickButton(driver, 1);
 
-		followRoute.whenPressed(new DriveTankByRoute(Constants.ROUTES_TARGET, 0.3, 10, 10));
+		followRoute.whenPressed(new DriveTankByRoute(Constants.ROUTES_TARGET, 5));
 	}
 
 }
