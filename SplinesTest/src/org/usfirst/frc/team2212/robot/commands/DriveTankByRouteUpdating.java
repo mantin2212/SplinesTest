@@ -2,7 +2,6 @@ package org.usfirst.frc.team2212.robot.commands;
 
 import org.usfirst.frc.team2212.robot.Robot;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import routes.ArgPoint;
 import utils.Point;
@@ -11,33 +10,32 @@ public class DriveTankByRouteUpdating extends Command {
 
 	private ArgPoint target;
 
-	private Timer timer;
-
-	private double speed;
-	private double tolerance;
-
 	private Command currentCommand;
 
 	private double fixTime;
 
-	public DriveTankByRouteUpdating(ArgPoint target, double speed, double tolerance, double fixTime) {
+	private double tolerance;
 
-		this.tolerance = tolerance;
-		this.speed = speed;
+	public DriveTankByRouteUpdating(ArgPoint target, double fixTime, double tolerance) {
+
 		this.fixTime = fixTime;
 
 		requires(Robot.drivetrain);
+
+		this.tolerance = tolerance;
+
+		currentCommand = new DriveTankByRoute(target, 1);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		timer.start();
+		currentCommand.start();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		if (!currentCommand.isRunning()) {
-			currentCommand = new DriveTankByRoute(target, speed, tolerance, fixTime);
+			currentCommand = new DriveTankByRoute(target, fixTime);
 			currentCommand.start();
 		}
 	}

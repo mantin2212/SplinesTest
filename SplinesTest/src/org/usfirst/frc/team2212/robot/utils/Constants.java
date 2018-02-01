@@ -22,4 +22,5 @@ public class Constants {
 	public static final double MOTOR_K1 = 0;
 	public static final double MOTOR_K2 = 0;
 
+	public static final double MAX_ABSOLUTE_VOLTAGE = 6;
 }

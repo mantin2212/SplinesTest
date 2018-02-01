@@ -14,15 +14,15 @@ import routes.synchronizing.DriveMaxSpeeds;
 import routes.synchronizing.RouteSynchronizer;
 import routes.synchronizing.RouteSynchronizer.Side;
 
-/**
- *
- */
 public class DriveTankByRoute extends Command {
 
 	private RouteSynchronizer synchronizer;
 	private Timer timer;
 
-	public DriveTankByRoute(ArgPoint target) {
+	public DriveTankByRoute(ArgPoint target, double timeout) {
+
+		this.setTimeout(timeout);
+
 		RouteDescription desc = new SplineDescription(Robot.location.getLocation(), target, Constants.K);
 
 		synchronizer = new DriveMaxSpeeds(Route.getRoute(desc, Constants.N), Constants.ROBOT_WIDTH,
@@ -37,17 +37,18 @@ public class DriveTankByRoute extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+
 		double time = timer.get();
 
-		double rightVoltage = Utils.SpeedToVoltage(synchronizer.getSpeed(Side.RIGHT, time));
-		double leftVoltage = Utils.SpeedToVoltage(synchronizer.getSpeed(Side.LEFT, time));
+		double rightVoltage = Utils.getVoltage(synchronizer.getSpeed(Side.RIGHT, time), 0);
+		double leftVoltage = Utils.getVoltage(synchronizer.getSpeed(Side.LEFT, time), 0);
 
 		Robot.drivetrain.tankDrive(leftVoltage, rightVoltage);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return synchronizer.isFinished(timer.get());
+		return synchronizer.isFinished(timer.get()) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
