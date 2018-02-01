@@ -19,4 +19,7 @@ public class Constants {
 
 	public static final double ROBOT_WIDTH = 60;
 
+	public static final double MOTOR_K1 = 0;
+	public static final double MOTOR_K2 = 0;
+
 }
