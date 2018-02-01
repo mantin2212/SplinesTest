@@ -40,13 +40,12 @@ public class DriveTankByRoute extends Command {
 
 		double time = timer.get();
 
-		double rightVoltage = Utils.getVoltage(synchronizer.getSpeed(Side.RIGHT, time), 0);
-		double leftVoltage = Utils.getVoltage(synchronizer.getSpeed(Side.LEFT, time), 0);
+		double rightVoltage = Utils.getNormalizedVoltage(synchronizer.getSpeed(Side.RIGHT, time), 0);
+		double leftVoltage = Utils.getNormalizedVoltage(synchronizer.getSpeed(Side.LEFT, time), 0);
 
 		Robot.drivetrain.tankDrive(leftVoltage, rightVoltage);
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		return synchronizer.isFinished(timer.get()) || isTimedOut();
 	}
