@@ -7,6 +7,7 @@ import routes.ArgPoint;
 public abstract class RobotLocation {
 
 	protected Supplier<Double> getRelativeTime;
+
 	private double lastTime;
 	protected double timeDiff;
 
@@ -22,6 +23,10 @@ public abstract class RobotLocation {
 
 	public ArgPoint getLocation() {
 		return location;
+	}
+
+	public double getAngle() {
+		return location.getAngle();
 	}
 
 	public void update() {
