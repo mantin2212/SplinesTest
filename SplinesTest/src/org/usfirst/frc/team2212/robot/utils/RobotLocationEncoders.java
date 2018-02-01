@@ -19,6 +19,7 @@ public class RobotLocationEncoders extends RobotLocation {
 
 	public RobotLocationEncoders(ArgPoint initLocation, Supplier<Double> getRelativeTime, Supplier<Double> getAngle,
 			Supplier<Double> getDistance) {
+
 		super(initLocation, getRelativeTime);
 
 		// initializing class variables
