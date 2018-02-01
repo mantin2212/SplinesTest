@@ -3,10 +3,9 @@ package org.usfirst.frc.team2212.robot;
 
 import org.usfirst.frc.team2212.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2212.robot.utils.Constants;
-import org.usfirst.frc.team2212.robot.utils.RobotLocationEncoders;
+import org.usfirst.frc.team2212.robot.utils.RobotLocationAccelerometers;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.spikes2212.dashboard.DashBoardController;
 import com.spikes2212.utils.DoubleSpeedcontroller;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -25,9 +24,7 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static Drivetrain drivetrain;
-	public static RobotLocationEncoders location;
-
-	public static DashBoardController dbc;
+	public static RobotLocationAccelerometers location;
 
 	@Override
 	public void robotInit() {
@@ -45,13 +42,8 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain(right, left, leftEncoder, rightEncoder, new AnalogGyro(RobotMap.GYRO_PORT));
 
 		oi = new OI();
-		location = new RobotLocationEncoders(Constants.ROBOT_INIT_LOCATION, drivetrain::getAngle, drivetrain::getDistance);
-
-		dbc = new DashBoardController();
-
-		dbc.addDouble("location x:", location.getLocation()::getX);
-		dbc.addDouble("location y:", location.getLocation()::getY);
-		dbc.addDouble("location angle:", location.getLocation()::getAngle);
+		location = new RobotLocationAccelerometers(Constants.ROBOT_INIT_LOCATION, Constants.DT, drivetrain::getRate,
+				drivetrain::getDistance);
 	}
 
 	@Override
@@ -71,12 +63,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-
 	}
 
 	@Override
 	public void teleopInit() {
-		location.start();
 	}
 
 	/**
@@ -85,9 +75,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-		dbc.update();
-		location.update();
 	}
 
 	/**
