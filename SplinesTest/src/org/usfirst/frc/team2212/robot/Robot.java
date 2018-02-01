@@ -3,15 +3,20 @@ package org.usfirst.frc.team2212.robot;
 
 import org.usfirst.frc.team2212.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2212.robot.utils.Constants;
+import org.usfirst.frc.team2212.robot.utils.RobotLocation;
 import org.usfirst.frc.team2212.robot.utils.RobotLocationAccelerometers;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.spikes2212.dashboard.DashBoardController;
 import com.spikes2212.utils.DoubleSpeedcontroller;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,12 +29,15 @@ public class Robot extends IterativeRobot {
 
 	public static OI oi;
 	public static Drivetrain drivetrain;
-	public static RobotLocationAccelerometers location;
+	public static RobotLocation location;
+
+	public static Accelerometer acc;
+
+	public static DashBoardController dbc;
 
 	@Override
 	public void robotInit() {
 		// initializing gearboxes and encoders
-
 		DoubleSpeedcontroller left = new DoubleSpeedcontroller(new WPI_TalonSRX(RobotMap.LEFT_FRONT_PORT),
 				new WPI_TalonSRX(RobotMap.LEFT_REAR_PORT));
 		DoubleSpeedcontroller right = new DoubleSpeedcontroller(new WPI_TalonSRX(RobotMap.RIGHT_FRONT_PORT),
@@ -42,8 +50,12 @@ public class Robot extends IterativeRobot {
 		drivetrain = new Drivetrain(right, left, leftEncoder, rightEncoder, new AnalogGyro(RobotMap.GYRO_PORT));
 
 		oi = new OI();
-		location = new RobotLocationAccelerometers(Constants.ROBOT_INIT_LOCATION, Constants.DT, drivetrain::getRate,
-				drivetrain::getDistance);
+
+		dbc = new DashBoardController();
+		acc = new BuiltInAccelerometer();
+
+		location = new RobotLocationAccelerometers(Constants.ROBOT_INIT_LOCATION, Timer::getFPGATimestamp, acc::getX,
+				acc::getY);
 	}
 
 	@Override
@@ -75,6 +87,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+
+		dbc.update();
+		location.update();
 	}
 
 	/**

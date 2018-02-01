@@ -2,71 +2,52 @@ package org.usfirst.frc.team2212.robot.utils;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.Timer;
 import routes.ArgPoint;
-import utils.Point;
 
-public class RobotLocationEncoders {
-
-	private Timer timer;
+public class RobotLocationEncoders extends RobotLocation {
 
 	private ArgPoint location;
 
 	private double prevDistance;
+	private double distanceDiff;
+
 	private double prevAngle;
-	private double prevTime;
+	private double angle;
 
 	private Supplier<Double> getAngle;
 	private Supplier<Double> getDistance;
 
-	public RobotLocationEncoders(ArgPoint initLocation, Supplier<Double> getAngle, Supplier<Double> getDistance) {
-		// initializing the robot's location
-		this.location = new ArgPoint(initLocation);
+	public RobotLocationEncoders(ArgPoint initLocation, Supplier<Double> getRelativeTime, Supplier<Double> getAngle,
+			Supplier<Double> getDistance) {
+		super(initLocation, getRelativeTime);
 
 		// initializing class variables
 		this.getAngle = getAngle;
 		this.getDistance = getDistance;
-		timer = new Timer();
-
-		// setting the previous distance and angle to their values
-		this.prevDistance = getDistance.get();
-		this.prevAngle = getAngle.get();
 	}
 
-	public void start() {
-		timer.start();
+	@Override
+	protected void updateData() {
+		super.updateData();
+
+		updateAngle();
+		updateDistance();
 	}
 
-	public void update() {
-		// calculating the current distance and angle
+	private void updateDistance() {
 		double currentDistance = getDistance.get();
-		double currentAngle = getAngle.get();
 
-		// setting the angle of the robot's location
-		location.setAngle(currentAngle);
-
-		// setting the location's coordinates
-		Point difference = getDifference(prevAngle, currentAngle, currentDistance - prevDistance);
-		location.move(difference.getX(), difference.getY());
-
-		// updating class variables
+		distanceDiff = currentDistance - prevDistance;
 		prevDistance = currentDistance;
-		prevAngle = currentAngle;
 	}
 
-	public ArgPoint getLocation() {
-		return location;
-	}
-
-	private Point getDifference(double previousAngle, double currentAngle, double distance) {
-		// calculating the x and y values of the difference
-		double dx = getDx(previousAngle, currentAngle, distance);
-		double dy = getDy(previousAngle, currentAngle, distance);
-
-		return new Point(dx, dy);
+	private void updateAngle() {
+		prevAngle = angle;
+		angle = getAngle.get();
 	}
 
 	private double getDx(double previousAngle, double currentAngle, double distance) {
+
 		double r = distance / (currentAngle - previousAngle);
 
 		double result = -2 * r * Math.sin((currentAngle - previousAngle) / 2)
@@ -76,6 +57,7 @@ public class RobotLocationEncoders {
 	}
 
 	private double getDy(double previousAngle, double currentAngle, double distance) {
+
 		double r = distance / (currentAngle - previousAngle);
 
 		double result = -2 * r * Math.sin((currentAngle - previousAngle) / 2)
@@ -85,7 +67,16 @@ public class RobotLocationEncoders {
 	}
 
 	public double getVelocity() {
-		return (getDistance.get() - prevDistance) / (timer.get() - prevTime);
+		return (getDistance.get() - prevDistance) / timeDiff;
+	}
+
+	@Override
+	protected void updateLocation() {
+		// calculating the x and y values of the difference
+		double dx = getDx(prevAngle, angle, distanceDiff);
+		double dy = getDy(prevAngle, angle, distanceDiff);
+
+		location.move(dx, dy);
 	}
 
 }
