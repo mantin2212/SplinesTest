@@ -13,6 +13,7 @@ public class Utils {
 	}
 
 	public static Point getAbsoluteVector(Point relativeVector, double angle) {
+
 		double relativeX = relativeVector.getX();
 		double relativeY = relativeVector.getY();
 

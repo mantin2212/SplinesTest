@@ -40,7 +40,7 @@ public class RobotLocationAccelerometers extends RobotLocation {
 		relativeAcceleration.setXAndY(getSideAcceleration.get(), getForwardAcceleration.get());
 
 		// updating the last acceleration and velocity
-		updatePrevs();
+		updatePreviousData();
 
 		// calculating the velocity vector and the robot's angle
 		this.velocity.move(timeDiff * lastAcceleration.getX(), timeDiff * lastAcceleration.getY());
@@ -51,7 +51,7 @@ public class RobotLocationAccelerometers extends RobotLocation {
 		acceleration = Utils.getAbsoluteVector(relativeAcceleration, location.getAngle());
 	}
 
-	private void updatePrevs() {
+	private void updatePreviousData() {
 
 		this.lastVelocity.setXAndY(velocity.getX(), velocity.getY());
 
@@ -69,5 +69,4 @@ public class RobotLocationAccelerometers extends RobotLocation {
 	public ArgPoint getLocation() {
 		return location;
 	}
-	// matan was here
 }
