@@ -1,4 +1,4 @@
-package org.usfirst.frc.team2212.robot.utils;
+package org.usfirst.frc.team2212.robot.utils.location;
 
 import java.util.function.Supplier;
 

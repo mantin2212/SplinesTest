@@ -3,8 +3,8 @@ package org.usfirst.frc.team2212.robot;
 
 import org.usfirst.frc.team2212.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team2212.robot.utils.Constants;
-import org.usfirst.frc.team2212.robot.utils.RobotLocation;
-import org.usfirst.frc.team2212.robot.utils.RobotLocationAccelerometers;
+import org.usfirst.frc.team2212.robot.utils.location.RobotLocation;
+import org.usfirst.frc.team2212.robot.utils.location.RobotLocationAccelerometers;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.spikes2212.dashboard.DashBoardController;
